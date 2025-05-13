@@ -1,0 +1,58 @@
+package hu.sonrisa.vatcalculator.service;
+
+import hu.sonrisa.vatcalculator.exception.InvalidVatRateException;
+import hu.sonrisa.vatcalculator.model.VatCalculationRequestDTO;
+import hu.sonrisa.vatcalculator.model.VatCalculationResponseDTO;
+import hu.sonrisa.vatcalculator.model.VatRate;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import org.springframework.stereotype.Service;
+
+/**
+ * This service class defines all implementation of operations related to VAT calculation.
+ */
+@Service
+public class VatCalculationServiceImpl implements VatCalculationService {
+
+  /**
+   * {@inheritDoc}
+   */
+  public VatCalculationResponseDTO calculate(final VatCalculationRequestDTO request) {
+    final BigDecimal vatRate = request.vatRate();
+
+    if (!VatRate.isValid(request.vatRate())) {
+      throw new InvalidVatRateException(
+          "Invalid VAT rate. Supported rates are " + VatRate.getAllowedVatRates());
+    }
+
+    if (request.netAmount() != null) {
+      return calculateFromNet(request.netAmount(), vatRate);
+    } else if (request.grossAmount() != null) {
+      return calculateFromGross(request.grossAmount(), vatRate);
+    } else {
+      return calculateFromVat(request.vatAmount(), vatRate);
+    }
+  }
+
+  private VatCalculationResponseDTO calculateFromNet(final BigDecimal netAmount,
+      final BigDecimal vatRate) {
+    final BigDecimal vatAmount = netAmount.multiply(vatRate).setScale(2, RoundingMode.HALF_UP);
+    final BigDecimal grossAmount = netAmount.add(vatAmount);
+    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+  }
+
+  private VatCalculationResponseDTO calculateFromGross(final BigDecimal grossAmount,
+      final BigDecimal vatRate) {
+    final BigDecimal netAmount = grossAmount.divide(BigDecimal.ONE.add(vatRate), 2,
+        RoundingMode.HALF_UP);
+    final BigDecimal vatAmount = grossAmount.subtract(netAmount);
+    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+  }
+
+  private VatCalculationResponseDTO calculateFromVat(final BigDecimal vatAmount,
+      final BigDecimal vatRate) {
+    final BigDecimal netAmount = vatAmount.divide(vatRate, 2, RoundingMode.HALF_UP);
+    final BigDecimal grossAmount = netAmount.add(vatAmount);
+    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+  }
+}
