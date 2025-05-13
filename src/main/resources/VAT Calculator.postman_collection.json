@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "32f76982-f684-42a9-81a0-264a94d7039b",
+		"name": "VAT Calculator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15532693"
+	},
+	"item": [
+		{
+			"name": "Net amount is set",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"netAmount\": \"10.00\",\r\n  \"grossAmount\": null,\r\n  \"vatAmount\": null,\r\n  \"vatRate\": \"0.20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/vat/calculate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vat",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gross amount is set",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"netAmount\": null,\r\n  \"grossAmount\": \"12.00\",\r\n  \"vatAmount\": null,\r\n  \"vatRate\": \"0.20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/vat/calculate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vat",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VAT amount is set",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"netAmount\": null,\r\n  \"grossAmount\": null,\r\n  \"vatAmount\": \"2.00\",\r\n  \"vatRate\": \"0.20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/vat/calculate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vat",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"netAmount\": null,\r\n  \"grossAmount\": null,\r\n  \"vatAmount\": \"2.00\",\r\n  \"vatRate\": \"0.20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/vat/calculate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vat",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
