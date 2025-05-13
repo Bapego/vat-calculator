@@ -38,7 +38,7 @@ public class VatCalculationServiceImpl implements VatCalculationService {
       final BigDecimal vatRate) {
     final BigDecimal vatAmount = netAmount.multiply(vatRate).setScale(2, RoundingMode.HALF_UP);
     final BigDecimal grossAmount = netAmount.add(vatAmount);
-    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+    return buildVatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
   }
 
   private VatCalculationResponseDTO calculateFromGross(final BigDecimal grossAmount,
@@ -46,13 +46,19 @@ public class VatCalculationServiceImpl implements VatCalculationService {
     final BigDecimal netAmount = grossAmount.divide(BigDecimal.ONE.add(vatRate), 2,
         RoundingMode.HALF_UP);
     final BigDecimal vatAmount = grossAmount.subtract(netAmount);
-    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+    return buildVatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
   }
 
   private VatCalculationResponseDTO calculateFromVat(final BigDecimal vatAmount,
       final BigDecimal vatRate) {
     final BigDecimal netAmount = vatAmount.divide(vatRate, 2, RoundingMode.HALF_UP);
     final BigDecimal grossAmount = netAmount.add(vatAmount);
-    return new VatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+    return buildVatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
+  }
+
+  private VatCalculationResponseDTO buildVatCalculationResponseDTO(final BigDecimal netAmount, final BigDecimal grossAmount, final BigDecimal vatAmount) {
+    return new VatCalculationResponseDTO(netAmount.setScale(2, RoundingMode.HALF_UP),
+        grossAmount.setScale(2, RoundingMode.HALF_UP),
+        vatAmount.setScale(2, RoundingMode.HALF_UP));
   }
 }
