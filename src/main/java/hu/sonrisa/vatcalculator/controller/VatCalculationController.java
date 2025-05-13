@@ -2,7 +2,7 @@ package hu.sonrisa.vatcalculator.controller;
 
 import hu.sonrisa.vatcalculator.model.VatCalculationRequestDTO;
 import hu.sonrisa.vatcalculator.model.VatCalculationResponseDTO;
-import hu.sonrisa.vatcalculator.service.VatCalculationServiceImpl;
+import hu.sonrisa.vatcalculator.service.VatCalculationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class VatCalculationController {
 
-  private final VatCalculationServiceImpl vatCalculationServiceImpl;
+  private final VatCalculationService vatCalculationService;
 
   /**
    * Endpoint which calculates the missing VAT amounts based on the provided input. It accepts
@@ -32,6 +32,6 @@ public class VatCalculationController {
   @PostMapping("/calculate")
   public ResponseEntity<VatCalculationResponseDTO> calculateVat(
       @RequestBody @Valid final VatCalculationRequestDTO request) {
-    return ResponseEntity.ok(vatCalculationServiceImpl.calculate(request));
+    return ResponseEntity.ok(vatCalculationService.calculate(request));
   }
 }
