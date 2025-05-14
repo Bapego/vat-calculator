@@ -25,17 +25,17 @@ public class VatRate {
    * @return true if the rate is valid; false otherwise
    */
   public static boolean isValid(final BigDecimal rate) {
-    return rate != null && VALID_VAT_RATES.contains(rate);
+    return rate != null && VALID_VAT_RATES.contains(rate.setScale(2, RoundingMode.HALF_UP));
   }
 
   /**
-   * Returns a comma-separated string of all allowed VAT rates in a human-readable format.
+   * Returns a comma-separated string of all allowed VAT rates.
    *
-   * @return a formatted string of valid VAT rates (e.g., "5%, 10%, 20%")
+   * @return a formatted string of valid VAT rates (e.g., "0.05, 0.1, 0.2")
    */
   public static String getAllowedVatRates() {
     return VALID_VAT_RATES.stream()
-        .map(rate -> rate.setScale(2, RoundingMode.HALF_UP).toPlainString() + "%")
+        .map(BigDecimal::toPlainString)
         .sorted()
         .collect(Collectors.joining(", "));
   }
