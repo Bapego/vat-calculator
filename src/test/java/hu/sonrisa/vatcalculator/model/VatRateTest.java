@@ -45,14 +45,11 @@ class VatRateTest {
   }
 
   @Test
-  @DisplayName("getAllowedVatRates() should return formatted and sorted rate list")
+  @DisplayName("getAllowedVatRates() should return sorted rate list")
   void shouldReturnFormattedVatRateString() {
     final String result = VatRate.getAllowedVatRates();
 
     assertThat(result)
-        .isEqualTo("0.10%, 0.13%, 0.20%")
-        .contains("0.10%")
-        .contains("0.13%")
-        .contains("0.20%");
+        .isEqualTo("0.10, 0.13, 0.20");
   }
 }
