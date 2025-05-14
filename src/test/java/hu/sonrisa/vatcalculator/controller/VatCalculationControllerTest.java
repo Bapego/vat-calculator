@@ -42,10 +42,10 @@ class VatCalculationControllerTest {
     void shouldReturnCalculatedVatResponse() throws Exception {
       // Arrange
       final VatCalculationRequestDTO request = new VatCalculationRequestDTO(
-          new BigDecimal("100.00"),
+          "100.00",
           null,
           null,
-          new BigDecimal("0.20")
+          "0.20"
       );
 
       final VatCalculationResponseDTO expectedResponse = new VatCalculationResponseDTO(
@@ -92,10 +92,10 @@ class VatCalculationControllerTest {
     @DisplayName("Should return 400 Bad Request when input amount is zero")
     void returnsBadRequestWhenAmountIsZero() throws Exception {
       final VatCalculationRequestDTO invalidRequest = new VatCalculationRequestDTO(
-          new BigDecimal("0.00"),
+          "0.00",
           null,
           null,
-          new BigDecimal("0.20")
+          "0.20"
       );
 
       mockMvc.perform(post("/api/vat/calculate")
@@ -110,10 +110,10 @@ class VatCalculationControllerTest {
     @DisplayName("Should return 400 Bad Request when more than one amount field is set")
     void returnsBadRequestWhenMultipleAmountFieldsAreSet() throws Exception {
       final VatCalculationRequestDTO invalidRequest = new VatCalculationRequestDTO(
-          new BigDecimal("12.00"),
-          new BigDecimal("12.00"),
+          "12.00",
+          "12.00",
           null,
-          new BigDecimal("0.10")
+          "0.10"
       );
 
       mockMvc.perform(post("/api/vat/calculate")

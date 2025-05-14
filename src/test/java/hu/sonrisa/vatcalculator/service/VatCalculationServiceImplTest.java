@@ -27,7 +27,7 @@ class VatCalculationServiceImplTest {
     @Test
     void shouldCalculateFromNetAmount() {
       final VatCalculationRequestDTO request = new VatCalculationRequestDTO(
-          new BigDecimal("100.00"), null, null, new BigDecimal("0.20"));
+          "100.00", null, null, "0.20");
 
       final VatCalculationResponseDTO response = vatCalculationService.calculate(request);
 
@@ -39,7 +39,7 @@ class VatCalculationServiceImplTest {
     @Test
     void shouldCalculateFromGrossAmount() {
       final VatCalculationRequestDTO request = new VatCalculationRequestDTO(
-          null, new BigDecimal("120.00"), null, new BigDecimal("0.20"));
+          null, "120", null, "0.20");
 
       final VatCalculationResponseDTO response = vatCalculationService.calculate(request);
 
@@ -51,7 +51,7 @@ class VatCalculationServiceImplTest {
     @Test
     void shouldCalculateFromVatAmount() {
       final VatCalculationRequestDTO request = new VatCalculationRequestDTO(
-          null, null, new BigDecimal("20.00"), new BigDecimal("0.20"));
+          null, null, "20.0", "0.2");
 
       final VatCalculationResponseDTO response = vatCalculationService.calculate(request);
 
@@ -68,7 +68,7 @@ class VatCalculationServiceImplTest {
     @Test
     void shouldThrowExceptionForInvalidVatRate() {
       final VatCalculationRequestDTO request = new VatCalculationRequestDTO(
-          new BigDecimal("100.00"), null, null, new BigDecimal("0.15"));
+          "100.00", null, null,"0.15");
 
       assertThrows(InvalidVatRateException.class, () -> vatCalculationService.calculate(request));
     }

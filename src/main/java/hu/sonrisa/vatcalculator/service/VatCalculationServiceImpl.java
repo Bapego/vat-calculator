@@ -18,19 +18,25 @@ public class VatCalculationServiceImpl implements VatCalculationService {
    * {@inheritDoc}
    */
   public VatCalculationResponseDTO calculate(final VatCalculationRequestDTO request) {
-    final BigDecimal vatRate = request.vatRate();
+    final BigDecimal vatRate = convertStringToBigDecimal(request.vatRate());
 
-    if (!VatRate.isValid(request.vatRate())) {
+    if (!VatRate.isValid(vatRate)) {
       throw new InvalidVatRateException(
           "Invalid VAT rate. Supported rates are " + VatRate.getAllowedVatRates());
     }
 
     if (request.netAmount() != null) {
-      return calculateFromNet(request.netAmount(), vatRate);
+
+      final BigDecimal netAmount = convertStringToBigDecimal(request.netAmount());
+      return calculateFromNet(netAmount, vatRate);
     } else if (request.grossAmount() != null) {
-      return calculateFromGross(request.grossAmount(), vatRate);
+
+      final BigDecimal grossAmount = convertStringToBigDecimal(request.grossAmount());
+      return calculateFromGross(grossAmount, vatRate);
     } else {
-      return calculateFromVat(request.vatAmount(), vatRate);
+
+      final BigDecimal vatAmount = convertStringToBigDecimal(request.vatAmount());
+      return calculateFromVat(vatAmount, vatRate);
     }
   }
 
@@ -56,9 +62,14 @@ public class VatCalculationServiceImpl implements VatCalculationService {
     return buildVatCalculationResponseDTO(netAmount, grossAmount, vatAmount);
   }
 
-  private VatCalculationResponseDTO buildVatCalculationResponseDTO(final BigDecimal netAmount, final BigDecimal grossAmount, final BigDecimal vatAmount) {
+  private VatCalculationResponseDTO buildVatCalculationResponseDTO(final BigDecimal netAmount,
+      final BigDecimal grossAmount, final BigDecimal vatAmount) {
     return new VatCalculationResponseDTO(netAmount.setScale(2, RoundingMode.HALF_UP),
         grossAmount.setScale(2, RoundingMode.HALF_UP),
         vatAmount.setScale(2, RoundingMode.HALF_UP));
+  }
+
+  private BigDecimal convertStringToBigDecimal(final String input) {
+    return new BigDecimal(input).setScale(2, RoundingMode.HALF_UP);
   }
 }

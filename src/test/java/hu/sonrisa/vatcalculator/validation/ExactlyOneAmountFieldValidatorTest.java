@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hu.sonrisa.vatcalculator.model.VatCalculationRequestDTO;
 import jakarta.validation.ConstraintValidatorContext;
-import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,7 +36,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("Only netAmount is set")
     void validWhenOnlyNetAmountSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          BigDecimal.valueOf(100), null, null, BigDecimal.valueOf(0.2));
+          "100", null, null, "0.2");
       assertTrue(validator.isValid(dto, context));
     }
 
@@ -45,7 +44,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("Only grossAmount is set")
     void validWhenOnlyGrossAmountSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          null, BigDecimal.valueOf(120), null, BigDecimal.valueOf(0.2));
+          null, "120", null, "0.2");
       assertTrue(validator.isValid(dto, context));
     }
 
@@ -53,7 +52,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("Only vatAmount is set")
     void validWhenOnlyVatAmountSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          null, null, BigDecimal.valueOf(20), BigDecimal.valueOf(0.2));
+          null, null, "20","0.2");
       assertTrue(validator.isValid(dto, context));
     }
   }
@@ -66,7 +65,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("All amount fields are null")
     void invalidWhenNoAmountSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          null, null, null, BigDecimal.valueOf(0.2));
+          null, null, null, "0.2");
       assertFalse(validator.isValid(dto, context));
     }
 
@@ -74,7 +73,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("Two amount fields are set")
     void invalidWhenTwoFieldsSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          BigDecimal.valueOf(100), BigDecimal.valueOf(120), null, BigDecimal.valueOf(0.2));
+          "100", "120", null, "0.2");
       assertFalse(validator.isValid(dto, context));
     }
 
@@ -82,7 +81,7 @@ class ExactlyOneAmountFieldValidatorTest {
     @DisplayName("All three amount fields are set")
     void invalidWhenAllFieldsSet() {
       final VatCalculationRequestDTO dto = new VatCalculationRequestDTO(
-          BigDecimal.valueOf(100), BigDecimal.valueOf(120), BigDecimal.valueOf(20), BigDecimal.valueOf(0.2));
+          "100", "120", "20", "0.2");
       assertFalse(validator.isValid(dto, context));
     }
   }

@@ -1,9 +1,8 @@
 package hu.sonrisa.vatcalculator.model;
 
 import hu.sonrisa.vatcalculator.validation.ExactlyOneAmountField;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
+import hu.sonrisa.vatcalculator.validation.ValidVatInput;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Request DTO representing the input sent by the client for VAT calculation. The client must
@@ -12,18 +11,18 @@ import java.math.BigDecimal;
 @ExactlyOneAmountField
 public record VatCalculationRequestDTO(
 
-    @DecimalMin(value = "0.00", inclusive = false)
-    BigDecimal netAmount,
+    @ValidVatInput
+    String netAmount,
 
-    @DecimalMin(value = "0.00", inclusive = false)
-    BigDecimal grossAmount,
+    @ValidVatInput
+    String grossAmount,
 
-    @DecimalMin(value = "0.00", inclusive = false)
-    BigDecimal vatAmount,
+    @ValidVatInput
+    String vatAmount,
 
-    @NotNull
-    @DecimalMin(value = "0.00", inclusive = false)
-    BigDecimal vatRate
+    @NotBlank
+    @ValidVatInput
+    String vatRate
 ) {
 
 }
